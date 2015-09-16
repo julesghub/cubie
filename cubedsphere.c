@@ -55,7 +55,7 @@ typedef enum {
 #define VA_BC 0 // variable attribute boundary condition
 
 /* function definitions */
-void partionCS( CS *mesh );
+void partitionCS( CS *mesh );
 void write_vtu( CS *mesh, char* filename ) ;
 void write_ascii( CS *cs );
 void write_sixth_vtu( Sixth* self, char* name );
@@ -1038,7 +1038,7 @@ int main(int argc, char** argv )
 
    /* go METIS go ! */
    t1=clock();
-   partionCS( &giant );
+   partitionCS( &giant );
    t2=clock();
    printf("Time to METIS global  %g sec\n", (double)(t2-t1)/CLOCKS_PER_SEC );
 
@@ -1158,7 +1158,7 @@ void write_sixth_vtu( Sixth* self, char* name )
 
 }
 
-void partionCS( CS *mesh )
+void partitionCS( CS *mesh )
 {
    /*
       create compressed storage format (CSR) of mesh and METIS it
