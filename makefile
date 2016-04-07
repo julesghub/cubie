@@ -16,3 +16,6 @@ CC=gcc
 
 all: cubedsphere.c
 	${CC} ${MACRO_DEFS} -g cubedsphere.c -o go -lm ${ARGS}
+
+clean:
+	rm go *.dat *.vtu

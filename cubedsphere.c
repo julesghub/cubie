@@ -1075,6 +1075,7 @@ int main(int argc, char** argv )
    }
 
    printf("Success\n");
+   exit(0);
 
 }
 
