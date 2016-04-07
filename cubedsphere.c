@@ -5,7 +5,6 @@
 #include<assert.h>
 #include<unistd.h>
 #include<time.h>
-#include<metis.h>
 
 #define NOS 6
 
@@ -55,7 +54,12 @@ typedef enum {
 #define VA_BC 0 // variable attribute boundary condition
 
 /* function definitions */
+
+#if METIS_ENABLED
+#include<metis.h>
 void partitionCS( CS *mesh );
+#endif
+
 void write_vtu( CS *mesh, char* filename ) ;
 void write_ascii( CS *cs );
 void write_sixth_vtu( Sixth* self, char* name );
@@ -557,7 +561,7 @@ void reorderCS( CS* giant, int oopps )
       belong to any element
     @*/
 
-   unsigned *activeList = giant->activeList;
+   int *activeList = giant->activeList;
    int *mapping = malloc( giant->nVerts*sizeof(int) );
    int **nbr=NULL; // the new adjacency table
    int **vattribs=NULL; // the new attributes table
@@ -1036,11 +1040,15 @@ int main(int argc, char** argv )
    giant.epart = malloc( giant.nEls*sizeof(int) );
    giant.vpart = malloc( giant.nVerts*sizeof(int) );
 
+#if METIS_ENABLED
    /* go METIS go ! */
    t1=clock();
    partitionCS( &giant );
    t2=clock();
    printf("Time to METIS global  %g sec\n", (double)(t2-t1)/CLOCKS_PER_SEC );
+#else
+   printf("no metis action because it wasn't found in compile\n" );
+#endif
 
    write_vtu( &giant, "globe.vtu" );
    write_ascii( &giant );
@@ -1158,6 +1166,7 @@ void write_sixth_vtu( Sixth* self, char* name )
 
 }
 
+#if METIS_ENABLED
 void partitionCS( CS *mesh )
 {
    /*
@@ -1186,36 +1195,6 @@ void partitionCS( CS *mesh )
    idx_t elmdist=nEls;
 
    idx_t ncommonnodes = 4; // for hexahedral
-
-#if 0
-
-
-   //idx_t *xadj = malloc( (nVerts+1)*sizeof(idx_t ));
-   //idx_t *adjcny=NULL;
-
-   // count every vert's number of connection starting with 0
-   for( v_i=0; v_i<nVerts+1; v_i++ ) {
-      xadj[v_i]=num_conn;
-      for(nbr_i=0; nbr_i<6; nbr_i++ ) {
-         if( nbrs[v_i][nbr_i] != -1 ) {
-            num_conn++;
-         }
-      }
-   }
-
-   // allocate the csr adjacency list
-   adjcny = malloc( num_conn * sizeof(idx_t) );
-
-   num_conn=0;
-   for( v_i=0; v_i<nVerts; v_i++ ) {
-      for(nbr_i=0; nbr_i<6; nbr_i++ ) {
-         if( nbrs[v_i][nbr_i] != -1 ) {
-            adjcny[num_conn]= nbrs[v_i][nbr_i];
-            num_conn++;
-         }
-      }
-   }
-#endif
 
    // fill in element indices
    idx_t num_eind=0;
@@ -1270,6 +1249,7 @@ void partitionCS( CS *mesh )
    free( eind );
    free( part );
 }
+#endif
 
 void write_vtu( CS *cs, char* filename )
 {
