@@ -252,8 +252,8 @@ void Sixth_Lift( Sixth *self, unsigned id, unsigned *ijk )
    unsigned d_i;
 
    for( d_i = 3; d_i > 0; d_i-- ) {
-      unsigned	dimInd = d_i - 1;
-      div_t		divRes;
+      unsigned    dimInd = d_i - 1;
+      div_t        divRes;
 
       divRes = div( rem, self->basis[dimInd] );
       ijk[dimInd] = divRes.quot;
@@ -709,7 +709,7 @@ void evaluate_sixth_geom( Sixth *self, double x_rot, double y_rot )
 
    unsigned ii,jj,kk, v_i;
    double d_xi, d_eta, d_r;
-   double X,Y,r,xi,eta,d,R,a,b,c;
+   double X,Y,r,xi,eta,d,a,b,c;
    double rot[9];
    double **coords=self->my_coords;
 
@@ -738,7 +738,6 @@ void evaluate_sixth_geom( Sixth *self, double x_rot, double y_rot )
 
             // calc projection vars.
             d = sqrt( 1 + X*X + Y*Y );
-            R = sqrt(3)*r;
 
             // project points onto spherical surface of radius R
             a = r/d * X;
@@ -870,6 +869,9 @@ int main(int argc, char** argv )
 
    clock_t t2, t1 = clock();
 
+   char error[] = "execute with\n ./go -l 11 -d 6 -r 10 -i 5\n" \
+            "where:\tl is the length resolution and d is the depth resolution\n" \
+            "\tr is the outer radius and i is the inner radius\n";
 
    /***
      get input:
@@ -878,7 +880,9 @@ int main(int argc, char** argv )
 
    n_surface_els=-1;
    n_depth_els=-1;
-   while ( (c = getopt(argc, argv, "l:d:")) != -1) {
+   outer_radius=-1;
+   inner_radius=-1;
+   while ( (c = getopt(argc, argv, "l:d:r:i:")) != -1) {
       switch( c ) {
       case 'l':
          n_surface_els=atoi(optarg);
@@ -886,20 +890,23 @@ int main(int argc, char** argv )
       case 'd':
          n_depth_els=atoi(optarg);
          break;
+      case 'r':
+         outer_radius=atof(optarg);
+         break;
+      case 'i':
+         inner_radius=atof(optarg);
+         break;
       case '?':
-         printf("execute with\n ./go -l 11 -d 6\n");
-         printf("where l is the length resolution and d is the depth resolution\n");
+         printf("%s", error);
          exit(1);
       default:
-         printf("execute with\n ./go -l 11 -d 6\n");
-         printf("where l is the length resolution and d is the depth resolution\n");
+         printf("%s", error);
          exit(1);
       }
 
    }
-   if( n_surface_els==-1 || n_depth_els==-1 ) {
-      printf("execute with\n ./go -l 11 -d 6\n");
-      printf("where l is the number of elements in length (d depth) per sixth\n");
+   if( n_surface_els==-1 || n_depth_els==-1 || outer_radius==-1 || inner_radius==-1 ) {
+      printf("%s", error);
       exit(1);
    }
 
@@ -911,8 +918,6 @@ int main(int argc, char** argv )
    /* set initial sixth definition */
    n_surface_verts = n_surface_els+1;
    n_depth_verts = n_depth_els+1;
-   outer_radius=6;
-   inner_radius=3;
 
    angleDelta = (M_PI/2)/(double)(n_surface_verts-1);
 
@@ -982,7 +987,7 @@ int main(int argc, char** argv )
    t2 = clock();
    printf("Time to initialise sixth %g sec\n", (double)(t2-t1)/CLOCKS_PER_SEC );
 
-   /*
+   /* */
    // debug
    write_sixth_vtu( &sixths[0], "sixth-0.vtu" );
    write_sixth_vtu( &sixths[1], "sixth-1.vtu" );
@@ -990,7 +995,6 @@ int main(int argc, char** argv )
    write_sixth_vtu( &sixths[3], "sixth-3.vtu" );
    write_sixth_vtu( &sixths[4], "sixth-4.vtu" );
    write_sixth_vtu( &sixths[5], "sixth-5.vtu" );
-   */
 
    /*
       run function to join walls
