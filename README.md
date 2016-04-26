@@ -22,16 +22,21 @@ The code optionally use the METIS library and development header to create a par
 Compile
 -------
 To compile:
-    'make'
+```
+    make
+```
 
 To run:
-    './go -l 11 -d 6 -r 10 -i 5'
-
+```
+    ./go -l 11 -d 6 -r 10 -i 5
+```
 where:
-l - number of elements across a sixth 
-d - number of elements in depth
-r - the outer radius
-i - the inner radius
+ - l - number of elements across a sixth 
+ - d - number of elements in depth
+ - r - the outer radius
+ - i - the inner radius
 
 To clean the output:
-    'make clean'
+```
+    make clean
+```
