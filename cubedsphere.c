@@ -1407,6 +1407,33 @@ void write_ascii( CS *cs )
    vpart = cs->vpart;
    vattribs = cs->vattribs;
 
+
+   /* output entire mesh information */
+   file = fopen("mesh.dat", "w");
+   assert(file);
+
+   // output the total number of verts elements
+   fprintf(file, "#vertex count\n"); 
+   fprintf(file, "%d\n", nVerts );
+   fprintf(file, "#cell count\n"); 
+   fprintf(file, "%d\n", nEls );
+
+   fprintf(file, "#cell vertex map\n"); 
+   // cell -> vertex
+   for(e_i=0; e_i<nEls; e_i++ ) {
+      for( v_i=0; v_i<8; v_i++ ) {
+         fprintf(file, "%d ", e_n[e_i][v_i] );
+      }
+      fprintf(file, "\n");
+   }
+
+   fprintf(file, "#vertex geometry and surface index\n"); 
+   // vertex geometry + surface index
+   for(v_i=0; v_i<nVerts; v_i++ )
+      fprintf(file, "%g %g %g %d\n", verts[v_i][0], verts[v_i][1], verts[v_i][2], vattribs[v_i][VA_BC] );
+   fclose(file);
+
+   /*
    file = fopen("coords.dat", "w");
    assert(file);
 
@@ -1442,4 +1469,5 @@ void write_ascii( CS *cs )
       fprintf(file, "\n");
    }
    fclose(file);
+   */
 }
