@@ -1413,10 +1413,8 @@ void write_ascii( CS *cs )
    assert(file);
 
    // output the total number of verts elements
-   fprintf(file, "#vertex count\n"); 
-   fprintf(file, "%d\n", nVerts );
-   fprintf(file, "#cell count\n"); 
-   fprintf(file, "%d\n", nEls );
+   fprintf(file, "#cell & vertex counts\n"); 
+   fprintf(file, "%d %d\n", nEls, nVerts );
 
    fprintf(file, "#cell vertex map\n"); 
    // cell -> vertex
