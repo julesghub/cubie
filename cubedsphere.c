@@ -1413,10 +1413,10 @@ void write_ascii( CS *cs )
    assert(file);
 
    // output the total number of verts elements
-   fprintf(file, "#cell & vertex counts\n"); 
+   //fprintf(file, "#cell & vertex counts\n"); 
    fprintf(file, "%d %d\n", nEls, nVerts );
 
-   fprintf(file, "#cell vertex map\n"); 
+   //fprintf(file, "#cell vertex map\n"); 
    // cell -> vertex
    for(e_i=0; e_i<nEls; e_i++ ) {
       for( v_i=0; v_i<8; v_i++ ) {
@@ -1425,7 +1425,7 @@ void write_ascii( CS *cs )
       fprintf(file, "\n");
    }
 
-   fprintf(file, "#vertex geometry and surface index\n"); 
+   //fprintf(file, "#vertex geometry and surface index\n"); 
    // vertex geometry + surface index
    for(v_i=0; v_i<nVerts; v_i++ )
       fprintf(file, "%g %g %g %d\n", verts[v_i][0], verts[v_i][1], verts[v_i][2], vattribs[v_i][VA_BC] );
