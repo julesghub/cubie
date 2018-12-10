@@ -1,14 +1,13 @@
 pipeline {
     agent {
         docker { 
-          image 'ubuntu:latest'
+          image 'underworldcode/underworld2:latest'
           label 'slave'
         }
     }
     stages {
         stage('Build') {
             steps {
-              sh 'sudo apt-get update -qq ; sudo apt-get install -yq make gcc'
               sh 'env'
               sh 'ls -lhtr'
               sh 'make'
