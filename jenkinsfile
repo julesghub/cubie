@@ -8,7 +8,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-              sh 'echo "compiling..."'
+              sh 'env'
+              sh 'sh ls -lhtr'
               sh './make'
               
                 /*dir("./libUnderworld") {
