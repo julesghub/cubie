@@ -1,40 +1,46 @@
 #!groovy
 
 pipeline {
-    agent {
-        docker { 
-          image 'underworldcode/underworld2:latest'
-          label 'slave'
-        }
-    }
-    stages {
-        stage('Build') {
-            steps {
-              sh 'env'
-              sh 'ls -lhtr'
-              sh 'make'
-              
-                /*dir("./libUnderworld") {
-                  sh 'python configure.py'
-                  sh 'python compile.py'
-                }*/
-            }
-        }
+  agent {
+      docker { 
+        image 'underworldcode/underworld2:latest'
+        label 'slave'
+      }
+  }
+
+  stages {
+
+    stage('Build') {
+      steps {
+        sh 'env'
+        sh 'ls -lhtr'
+        sh 'make'
         
-        stage('Run') {
-          steps {
-            sh 'go -l 11 -d 6 -r 10 -i 5'
-          }
-        }
-        stage('Go Up a Directory') {
-          steps {
-            try {
-              dir("${WORKSPACE}") { sh 'ls -lhtr' }
-            }
-            catch(ierr) {
-              echo "Error detected"
-            }
-          }
-        }
+          /*dir("./libUnderworld") {
+            sh 'python configure.py'
+            sh 'python compile.py'
+          }*/
+      }
     }
+      
+    stage('Run') {
+      steps {
+        sh 'go -l 11 -d 6 -r 10 -i 5'
+      }
+    }
+
+    try {
+
+      stage('Go Up a Directory') {
+        steps {
+            dir("${WORKSPACE}") { sh 'ls -lhtr' }
+        }
+      }
+    }
+
+    catch (ierr) {
+      echo "Error detected"
+    }
+
+  }
 }
