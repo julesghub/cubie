@@ -32,7 +32,7 @@ pipeline {
 
     stage('Go Up a Directory') {
       steps {
-          dir("${WORKSPACE}") { sh 'ls -lhtr' }
+          dir("${WORKSPACE}/..") { sh 'ls -lhtr' }
       }
     }
 
