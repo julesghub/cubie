@@ -25,7 +25,7 @@ pipeline {
       
     stage('Run') {
       steps {
-        sh './go -l 11 -d 6 -r 10 -i 5'
+        sh './go -l 11 -d -6 -r 10 -i 5'
       }
       post {
         failure {
@@ -37,7 +37,7 @@ pipeline {
 
     stage('Go Up a Directory') {
       steps {
-          dir("${WORKSPACE}/..") { sh 'ls -lhtr' }
+          dir("${WORKSPACE}") { sh 'ls -lhtr' }
       }
     }
   }
