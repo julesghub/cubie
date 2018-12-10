@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+              sh 'apt-get update -qq ; apt-install -qy make gcc'
               sh 'env'
               sh 'ls -lhtr'
               sh 'make'
