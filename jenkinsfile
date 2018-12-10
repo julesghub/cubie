@@ -10,11 +10,11 @@ pipeline {
             steps {
               sh 'env'
               sh 'ls -lhtr'
-              sh './make'
+              sh 'make'
               
                 /*dir("./libUnderworld") {
-                  sh './configure.py'
-                  sh './compile.py'
+                  sh 'python configure.py'
+                  sh 'python compile.py'
                 }*/
             }
         }
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Run') {
           steps {
-            sh './go -l 11 -d 6 -r 10 -i 5'
+            sh 'go -l 11 -d 6 -r 10 -i 5'
           }
         }
     }
