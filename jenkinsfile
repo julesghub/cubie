@@ -27,6 +27,11 @@ pipeline {
       steps {
         sh './go -l 11 -d 6 -r 10 -i 5'
       }
+      post {
+        failure {
+          echo "Post section of Run: It failed!"
+        } 
+      }
     }
 
 
@@ -35,6 +40,11 @@ pipeline {
           dir("${WORKSPACE}/..") { sh 'ls -lhtr' }
       }
     }
-
+  }
+  
+  post {
+    success {
+      echo "Success"
+    }
   }
 }
