@@ -29,17 +29,11 @@ pipeline {
       }
     }
 
-    try {
 
-      stage('Go Up a Directory') {
-        steps {
-            dir("${WORKSPACE}") { sh 'ls -lhtr' }
-        }
+    stage('Go Up a Directory') {
+      steps {
+          dir("${WORKSPACE}") { sh 'ls -lhtr' }
       }
-    }
-
-    catch (ierr) {
-      echo "Error detected"
     }
 
   }
