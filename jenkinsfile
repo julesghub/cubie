@@ -1,0 +1,31 @@
+pipeline {
+    agent {
+        docker { 
+          image 'ubuntu:dev'
+          label 'slave'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+              sh 'echo "compiling..."'
+              sh './make'
+              
+                /*dir("./libUnderworld") {
+                  sh './configure.py'
+                  sh './compile.py'
+                }*/
+            }
+        }
+        stage('Go Up a Directory') {
+          steps {
+            dir("../") { sh 'sh ls -lhtr' }
+          }
+        }
+        stage('Run') {
+          steps {
+            sh './go -l 11 -d 6 -r 10 -i 5'
+          }
+        }
+    }
+}
