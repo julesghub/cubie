@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
               sh 'env'
-              sh 'sh ls -lhtr'
+              sh 'ls -lhtr'
               sh './make'
               
                 /*dir("./libUnderworld") {
@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Go Up a Directory') {
           steps {
-            dir("../") { sh 'sh ls -lhtr' }
+            dir("../") { sh 'ls -lhtr' }
           }
         }
         stage('Run') {
