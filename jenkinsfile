@@ -30,8 +30,8 @@ pipeline {
             sh './go -l 11 -d -6 -r 10 -i 5'
           }
           catch (err) {
-            echo "Error detected, but I'm continuing"
-            currentBuild.result = "SUCCESS"
+            echo "Error detected ${err}, but I'm continuing"
+            
           } 
         }
         
