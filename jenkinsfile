@@ -30,7 +30,9 @@ pipeline {
       post {
         failure {
           echo "Post section of Run: It failed!"
-          currentBuild.result = "SUCCESS"
+          script {
+            currentBuild.result = "SUCCESS"
+          }
         } 
       }
     }
