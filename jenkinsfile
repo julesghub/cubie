@@ -30,6 +30,7 @@ pipeline {
       post {
         failure {
           echo "Post section of Run: It failed!"
+          currentBuild.result = "SUCCESS"
         } 
       }
     }
@@ -37,14 +38,19 @@ pipeline {
 
     stage('Go Up a Directory') {
       steps {
-          dir("${WORKSPACE}") { sh 'ls -lhtr' }
+          dir("${WORKSPACE}") { 
+            sh 'ls -lhtr' 
+          }
       }
     }
   }
   
   post {
     success {
-      echo "Success"
+      echo "This is success"
+    }
+    failure {
+      echo "This is failure"
     }
   }
 }
