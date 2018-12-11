@@ -25,16 +25,25 @@ pipeline {
       
     stage('Run') {
       steps {
-        sh './go -l 11 -d -6 -r 10 -i 5'
+        script {
+          try {
+            sh './go -l 11 -d -6 -r 10 -i 5'
+          }
+          catch (err) {
+            echo "Error detected, but I'm continuing"
+            currentBuild.result = "SUCCESS"
+          } 
+        }
+        
       }
-      post {
+      /*post {
         failure {
           echo "Post section of Run: It failed!"
           script {
             currentBuild.result = "SUCCESS"
           }
         } 
-      }
+      }*/
     }
 
 
