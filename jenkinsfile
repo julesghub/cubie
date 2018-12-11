@@ -31,7 +31,8 @@ pipeline {
           }
           catch (err) {
             echo "Error detected ${err}, but I'm continuing"
-            
+            currentBuild.results = "FAILURE"
+            return 
           } 
         }
         
