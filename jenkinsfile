@@ -35,6 +35,7 @@ pipeline {
         
       }
     }  
+/*
     stage('Test Failure') {
       steps {
         script {
@@ -43,14 +44,14 @@ pipeline {
           }
           catch (err) {
             echo "Error detected ${err}, but I'm continuing"
-            currentBuild.results = "SUCCESS"
+            currentBuild.results = "FAILURE"
             return 
           } 
         }
         
       }
     }
-
+*/
     stage('Go Up a Directory') {
       steps {
           dir("${WORKSPACE}") { 
