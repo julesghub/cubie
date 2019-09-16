@@ -1,9 +1,11 @@
 #!groovy
 
+// A "Declarative" Pipeline file. No a "Scripted".
+
 pipeline {
   agent {
       docker { 
-        image 'underworldcode/underworld2:latest'
+        image 'underworldcode/underworld2:dev'
         label 'slave'
       }
   }
@@ -15,19 +17,14 @@ pipeline {
         sh 'env'
         sh 'ls -lhtr'
         sh 'make'
-        
-          /*dir("./libUnderworld") {
-            sh 'python configure.py'
-            sh 'python compile.py'
-          }*/
       }
     }
-      
-    stage('Run') {
+
+    stage('Test Cubie') {
       steps {
         script {
           try {
-            sh './go -l 11 -d -6 -r 10 -i 5'
+            sh './go -l 11 -d 6 -r 10 -i 5'
           }
           catch (err) {
             echo "Error detected ${err}, but I'm continuing"
@@ -37,16 +34,22 @@ pipeline {
         }
         
       }
-      /*post {
-        failure {
-          echo "Post section of Run: It failed!"
-          script {
-            currentBuild.result = "SUCCESS"
+    }  
+    stage('Test Failure') {
+      steps {
+        script {
+          try {
+            sh './go -l 11 -d -6 -r 10 -i 5'
           }
-        } 
-      }*/
+          catch (err) {
+            echo "Error detected ${err}, but I'm continuing"
+            currentBuild.results = "SUCCESS"
+            return 
+          } 
+        }
+        
+      }
     }
-
 
     stage('Go Up a Directory') {
       steps {
@@ -56,13 +59,35 @@ pipeline {
       }
     }
   }
-  
-  post {
-    success {
-      echo "This is success"
-    }
+   post {
     failure {
-      echo "This is failure"
+      // notify users when the Pipeline fails
+      emailext (
+          subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+          body: "Something is wrong with ${env.BUILD_URL}",
+          // mimeType: 'text/html',
+          to: 'house.of.jules@gmail.com'
+        )
     }
+    unstable {
+      // notify users when the Pipeline fails
+      emailext (
+          subject: "Unstable Pipeline: ${currentBuild.fullDisplayName}",
+          body: "Something is unstable with ${env.BUILD_URL}",
+          // mimeType: 'text/html',
+          to: 'house.of.jules@gmail.com'
+        )
+    }
+    success {
+      script {
+        emailext (
+          subject: "Back to normal: ${currentBuild.fullDisplayName}",
+          body: "Project is back to normal",
+          // mimeType: 'text/html',
+          to: 'house.of.jules@gmail.com'
+        )
+      }
+    }
+  
   }
 }
