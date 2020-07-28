@@ -25,7 +25,7 @@ jobs:
       uses: garygrossgarten/github-action-ssh@v0.5.0
       with:
         command: ls -a
-        host: gadi.nci.org.au
+        host: "gadi.nci.org.au"
         username: ${{ secrets.GADI_UNAME }}
         privateKey: ${{ secrets.GADI_PRIVATEKEY }}
         passphrase: ${{ secrets.GADI_PASSPHRASE }}
