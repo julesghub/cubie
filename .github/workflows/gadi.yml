@@ -28,4 +28,4 @@ jobs:
         host: gadi.nci.org.au
         username: ${{ secrets.GADI_UNAME }}
         privateKey: ${{ secrets.GADI_PRIVATEKEY }}
-        passphase: ${{ secrets.GADI_PASSPHRASE }}
+        passphrase: ${{ secrets.GADI_PASSPHRASE }}
