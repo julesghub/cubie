@@ -28,7 +28,7 @@ jobs:
       with:
         command: ls -a
         host: "gadi.nci.org.au"
-        username: "jug565"
-#        password: ${{ secrets.GADI_PWORD }}
-        passphrase: ${{ secrets.GADI_PASSPHRASE }}
-        privateKey: ${{ secrets.GADI_PRIVATE_KEY }}
+        username: ${{ secrets.GADI_UNAME }}
+        password: ${{ secrets.GADI_PWORD }}
+        #passphrase: ${{ secrets.GADI_PASSPHRASE }}
+        #privateKey: ${{ secrets.GADI_PRIVATE_KEY }}
